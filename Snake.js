@@ -40,8 +40,8 @@ function init(){
             if(headX==food.x && headY==food.y){
                 food = getFood() ;
             }
+            //If food is eaten no need to reduce the length 
             else { 
-                //If food is eaten no need to reduce the length 
                 this.cells.pop() ;
             }
 
