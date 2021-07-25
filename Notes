@@ -1,0 +1,7 @@
+Snake Game :
+
+1.)The game will have different stages : (Game loop)
+    a.)Initial screen
+    b.)Draw the required objects 
+    c.)Update the objects 
+    d.)Repeat stages 2nd and 3rd stages until the game is over 
