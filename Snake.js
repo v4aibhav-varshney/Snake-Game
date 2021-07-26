@@ -7,6 +7,13 @@ function init(){
     pen = canvas.getContext("2d");
 
     game_over = false ;
+    score = 0 ;
+
+    //Food and trophy image objects :
+    food_img = new Image() ;
+    food_img.src="Apple.png" ;
+    trophy_img = new Image() ;
+    trophy_img.src = "Trophy.png" ;
 
     //Snake object : 
     //Underlying data structure : Array
@@ -14,12 +21,12 @@ function init(){
         init_len: 5 , //Initial Length
         color:"blue" ,
         cells:[] , //Each cell consists of relative coordinates of that cell
-        direction :"right" ,
+        direction :"none" ,
         cellSize : 33.5 ,
 
         createSnake : function(){
             for(var i=this.init_len;i>0;i--){
-                this.cells.push({x:i,y:0}) ;
+                this.cells.push({x:i+2,y:0}) ;
             }
         },
 
@@ -33,12 +40,17 @@ function init(){
         },
 
         updateSnake : function(){
+            if(this.direction=="none"){
+                return ;
+            }
+
             var headX = this.cells[0].x ;
             var headY = this.cells[0].y ;
 
             //If food is eaten by the snake 
             if(headX==food.x && headY==food.y){
                 food = getFood() ;
+                score++ ;
             }
             //If food is eaten no need to reduce the length 
             else { 
@@ -106,11 +118,20 @@ function draw(){
 
     snake.drawSnake() ;
     food.drawFood() ;
+    getScore() ;
 
 }
 
 function update(){
     snake.updateSnake() ;
+}
+
+function getScore(){
+    var cs = snake.cellSize ;
+    pen.drawImage(trophy_img,12,9,cs,cs) ;
+    pen.fillStyle="black" ;
+    pen.font="15px Roboto" ;
+    pen.fillText(score,25,25) ;
 }
 
 function getFood(){ 
@@ -122,11 +143,10 @@ function getFood(){
     food = {
         x : foodX ,
         y : foodY ,
-        color : "red" ,
 
         drawFood : function(){
-            pen.fillStyle = this.color ;
-            pen.fillRect(this.x*cs,this.y*cs,cs-1,cs-1) ;
+    
+            pen.drawImage(food_img,this.x*cs,this.y*cs,cs-1,cs-1) ;
         }
     };
 
