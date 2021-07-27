@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'chalk'; /*a name to be used later*/
-    src: url('Myfont.ttf'); /*URL to font*/
+    src: url('./Fonts/Myfont.ttf'); /*URL to font*/
 }
 
 h1{ 

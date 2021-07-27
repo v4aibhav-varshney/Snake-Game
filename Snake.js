@@ -9,11 +9,14 @@ function init(){
     game_over = false ;
     score = 0 ;
 
+    //Sound object :
+    eat_audio = new Audio("./Audio/Eat.mp3") ;
+
     //Food and trophy image objects :
     food_img = new Image() ;
-    food_img.src="Apple.png" ;
+    food_img.src="./Images/Apple.png" ;
     trophy_img = new Image() ;
-    trophy_img.src = "Trophy.png" ;
+    trophy_img.src = "./Images/Trophy.png" ;
 
     //Snake object : 
     //Underlying data structure : Array
@@ -51,6 +54,7 @@ function init(){
             if(headX==food.x && headY==food.y){
                 food = getFood() ;
                 score++ ;
+                eat_audio.play() ;
             }
             //If food is eaten no need to reduce the length 
             else { 
