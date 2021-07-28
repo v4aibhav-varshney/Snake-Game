@@ -81,15 +81,29 @@ function init(){
 
             this.cells.unshift({x:nextX,y:nextY}) ;
 
+        },
+
+        checkSnake : function(){
+            var headX = this.cells[0].x ;
+            var headY = this.cells[0].y ;
+
             //To prevent snake from going out 
-            var lastX = canvas.width/this.cellSize ;
-            var lastY = canvas.height/this.cellSize ;
-            if(this.cells[0].x <0 || this.cells[0].x>lastX){
-                game_over = true ;
+            var lastX = canvas.width / this.cellSize;
+            var lastY = canvas.height / this.cellSize;
+            if (headX < 0 || headX > lastX) {
+                game_over = true;
             }
-            if(this.cells[0].y<0  || this.cells[0].y>lastY){
-                game_over = true ;
+            if (headY < 0 || headY > lastY) {
+                game_over = true;
             }
+
+            //To prevent snake to overlap itself 
+            for(var i = 1 ;i<this.cells.length ;i++){
+                if(headX == this.cells[i].x && headY == this.cells[i].y){
+                    game_over = true ;
+                }
+            }
+
         }
     };
 
@@ -128,6 +142,7 @@ function draw(){
 
 function update(){
     snake.updateSnake() ;
+    snake.checkSnake() ;
 }
 
 function getScore(){
@@ -149,7 +164,6 @@ function getFood(){
         y : foodY ,
 
         drawFood : function(){
-    
             pen.drawImage(food_img,this.x*cs,this.y*cs,cs-1,cs-1) ;
         }
     };
