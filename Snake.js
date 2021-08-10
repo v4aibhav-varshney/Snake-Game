@@ -28,7 +28,7 @@ function init(){
         cellSize : 33.5 ,
 
         createSnake : function(){
-            for(var i=this.init_len;i>0;i--){
+            for(var i=this.init_len ; i>0 ; i--){
                 this.cells.push({x:i+2,y:0}) ;
             }
         },
