@@ -7,16 +7,21 @@ function init(){
     pen = canvas.getContext("2d");
 
     game_over = false ;
+    game_start = false ;
     score = 0 ;
 
-    //Sound object :
+    //Sound objects :
     eat_audio = new Audio("./Audio/Eat.mp3") ;
+    turn_audio = new Audio("./Audio/Turn.mp3") ;
+    dead_audio = new Audio("./Audio/Dead.mp3") ;
 
-    //Food and trophy image objects :
+    //Image objects :
     food_img = new Image() ;
     food_img.src="./Images/Apple.png" ;
     trophy_img = new Image() ;
     trophy_img.src = "./Images/Trophy.png" ;
+    keys_img = new Image() ;
+    keys_img.src ="./Images/Keys.jpg" ;
 
     //Snake object : 
     //Underlying data structure : Array
@@ -92,15 +97,18 @@ function init(){
             var lastY = canvas.height / this.cellSize;
             if (headX < 0 || headX > lastX) {
                 game_over = true;
+                return ;
             }
             if (headY < 0 || headY > lastY) {
                 game_over = true;
+                return ;
             }
 
             //To prevent snake to overlap itself 
             for(var i = 1 ;i<this.cells.length ;i++){
                 if(headX == this.cells[i].x && headY == this.cells[i].y){
                     game_over = true ;
+                    return ;
                 }
             }
 
@@ -113,6 +121,7 @@ function init(){
     snake.createSnake() ;
 
     function keyPressed(event){
+        game_start = true ;
         if(event.key=='ArrowRight'){
             snake.direction='right' ;
         }
@@ -125,6 +134,8 @@ function init(){
         else if(event.key=='ArrowDown'){
             snake.direction='down' ;
         }
+
+        turn_audio.play() ;
     }
 
     document.addEventListener('keydown',keyPressed) ;
@@ -137,12 +148,18 @@ function draw(){
     snake.drawSnake() ;
     food.drawFood() ;
     getScore() ;
-
+    getKeys() ;
 }
 
 function update(){
     snake.updateSnake() ;
     snake.checkSnake() ;
+}
+
+function getKeys(){
+    if(game_start==false){
+        pen.drawImage(keys_img, 200, 200, 100, 100);
+    }
 }
 
 function getScore(){
@@ -165,14 +182,24 @@ function getFood(){
 
         drawFood : function(){
             pen.drawImage(food_img,this.x*cs,this.y*cs,cs-1,cs-1) ;
+        },
+
+        checkFood : function(){
+            for(var i=0;i<snake.cells.length ;i++){
+                if(this.x==snake.cells[i].x && this.y==snake.cells[i].y){
+                    getFood() ;
+                }
+            }
         }
     };
-
+    
+    food.checkFood() ;
     return food ;
 }
 
 function gameLoop(){
     if(game_over==true){
+        dead_audio.play();
         clearInterval(main) ;
         alert("Game Over") ;
         return ;
